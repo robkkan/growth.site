@@ -215,8 +215,7 @@ function HomeContent() {
           {/* Grid Section */}
           <div className="w-full flex justify-center mx-auto px-12">
             <motion.div
-              onClick={handleGridClick}
-              className="cursor-pointer w-full"
+              className="w-full"
               layoutId="expandingGrid"
               initial={{ opacity: 0 }}
               animate={{ opacity: isLoading ? 0 : 1 }}

@@ -46,18 +46,18 @@
 
   /* Responsive font sizes */
   html {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   @media (min-width: 420px) {
     html {
-      font-size: 14px;
+      font-size: 13px;
     }
   }
 
   @media (min-width: 1024px) { 
     html { 
-      font-size: 15px; 
+      font-size: 14px; 
     } 
   }
 

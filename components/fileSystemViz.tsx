@@ -99,7 +99,7 @@ const FileSystemVisualizer: React.FC<FileSystemVisualizerProps> = memo(({
 
           {/* Updated Folder Front */}
           <motion.div 
-            className="absolute bottom-[0] w-full z-10"
+            className="absolute bottom-[0.25rem] w-full z-10"
             style={{
               transformOrigin: 'bottom',
               perspective: '1000px',
