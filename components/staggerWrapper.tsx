@@ -7,10 +7,10 @@ interface StaggerWrapperProps {
   index?: number;
   initial: { opacity: number; y: number };
   animate: { opacity: number; y: number };
-  transition?: {
-    duration?: number;
-    delay?: number;
-    ease?: string | number[];
+  transition: {
+    duration: number;
+    delay: number;
+    ease: number[];
   };
   className?: string;
 }
@@ -20,10 +20,7 @@ export const StaggerWrapper = ({
   skipAnimation = false,
   initial, 
   animate, 
-  transition = {
-    duration: 0.5,
-    ease: [0.21, 0.47, 0.32, 0.98] // Custom easing curve for smooth animation
-  },
+  transition,
   className = '' 
 }: StaggerWrapperProps) => {
   if (skipAnimation) {
