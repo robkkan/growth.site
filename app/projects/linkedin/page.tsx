@@ -85,7 +85,6 @@ function LinkedInContent() {
                   alt="ClubsNEU main interface"
                   width={1200}
                   height={675}
-                  layout="responsive"
                 />
               </div>
             </section>
@@ -211,7 +210,6 @@ function LinkedInContent() {
                         alt="Internal audit"
                         width={1200}
                         height={675}
-                        layout="responsive"
                       />
                     </div>
                   </div>
@@ -230,7 +228,6 @@ function LinkedInContent() {
                         alt="External audit"
                         width={1200}
                         height={675}
-                        layout="responsive"
                       />
                     </div>
                   </div>
@@ -316,7 +313,6 @@ function LinkedInContent() {
                         alt="Entry point 1"
                         width={1200}
                         height={675}
-                        layout="responsive"
                       />
                     </div>
                     <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
@@ -325,7 +321,6 @@ function LinkedInContent() {
                         alt="Entry point 2"
                         width={1200}
                         height={675}
-                        layout="responsive"
                       />
                     </div>
                     <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
@@ -334,7 +329,6 @@ function LinkedInContent() {
                         alt="Entry point 3"
                         width={1200}
                         height={675}
-                        layout="responsive"
                       />
                     </div>
                   </div>
@@ -353,7 +347,6 @@ function LinkedInContent() {
                         alt="Tone selection"
                         width={1200}
                         height={675}
-                        layout="responsive"
                       />
                     </div>
                   </div>
@@ -373,7 +366,6 @@ function LinkedInContent() {
                         alt="ClubsNEU main interface"
                         width={1200}
                         height={675}
-                        layout="responsive"
                       />
                     </div>
                     <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
@@ -382,7 +374,6 @@ function LinkedInContent() {
                         alt="ClubsNEU main interface"
                         width={1200}
                         height={675}
-                        layout="responsive"
                       />
                     </div>
                   </div>
@@ -433,7 +424,6 @@ function LinkedInContent() {
                         alt="Brand"
                         width={1200}
                         height={675}
-                        layout="responsive"
                       />
                     </div>
                     <h4 className="text-primary-color-light">
@@ -469,7 +459,6 @@ function LinkedInContent() {
                         alt="AI rewrite"
                         width={1200}
                         height={675}
-                        layout="responsive"
                       />
                     </div>
                     <h4 className="text-primary-color-light">
@@ -484,7 +473,6 @@ function LinkedInContent() {
                         alt="Create image"
                         width={1200}
                         height={675}
-                        layout="responsive"
                       />
                     </div>
                     <h4 className="text-primary-color-light">

@@ -55,7 +55,6 @@ function FetchrContent() {
                   alt="ClubsNEU main interface"
                   width={1200}
                   height={675}
-                  layout="responsive"
                 />
               </div>
               <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
@@ -64,7 +63,6 @@ function FetchrContent() {
                   alt="ClubsNEU main interface"
                   width={1200}
                   height={675}
-                  layout="responsive"
                 />
               </div>
               <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
@@ -73,7 +71,6 @@ function FetchrContent() {
                   alt="ClubsNEU main interface"
                   width={1200}
                   height={675}
-                  layout="responsive"
                 />
               </div>
             </section>
