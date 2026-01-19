@@ -69,7 +69,6 @@ function ClubsNEUContent() {
                   alt="ClubsNEU main interface"
                   width={1200}
                   height={675}
-                  layout="responsive"
                 />
               </div>
             </section>
@@ -102,7 +101,6 @@ function ClubsNEUContent() {
                     alt="ClubsNEU main interface"
                     width={1200}
                     height={675}
-                    layout="responsive"
                   />
                 </div>
               </div>
@@ -121,7 +119,6 @@ function ClubsNEUContent() {
                     alt="ClubsNEU main interface"
                     width={1200}
                     height={675}
-                    layout="responsive"
                   />
                 </div>
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
@@ -130,7 +127,6 @@ function ClubsNEUContent() {
                     alt="ClubsNEU main interface"
                     width={1200}
                     height={675}
-                    layout="responsive"
                   />
                 </div>
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
@@ -139,7 +135,6 @@ function ClubsNEUContent() {
                     alt="ClubsNEU main interface"
                     width={1200}
                     height={675}
-                    layout="responsive"
                   />
                 </div>
               </div>
@@ -176,7 +171,6 @@ function ClubsNEUContent() {
                     alt="ClubsNEU main interface"
                     width={1200}
                     height={675}
-                    layout="responsive"
                   />
                 </div>
               </div>
@@ -201,7 +195,6 @@ function ClubsNEUContent() {
                     alt="ClubsNEU main interface"
                     width={1200}
                     height={675}
-                    layout="responsive"
                   />
                 </div>
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
@@ -210,7 +203,6 @@ function ClubsNEUContent() {
                     alt="ClubsNEU main interface"
                     width={1200}
                     height={675}
-                    layout="responsive"
                   />
                 </div>
               </div>
@@ -229,7 +221,6 @@ function ClubsNEUContent() {
                     alt="ClubsNEU main interface"
                     width={1200}
                     height={675}
-                    layout="responsive"
                   />
                 </div>
               </div>
@@ -248,7 +239,6 @@ function ClubsNEUContent() {
                     alt="ClubsNEU main interface"
                     width={1200}
                     height={675}
-                    layout="responsive"
                   />
                 </div>
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
@@ -257,7 +247,6 @@ function ClubsNEUContent() {
                     alt="ClubsNEU main interface"
                     width={1200}
                     height={675}
-                    layout="responsive"
                   />
                 </div>
               </div>
@@ -283,7 +272,6 @@ function ClubsNEUContent() {
                       alt="ClubsNEU main interface"
                       width={1200}
                       height={675}
-                      layout="responsive"
                     />
                   </div>
                   <h4 className="text-primary-color-light">
@@ -298,7 +286,6 @@ function ClubsNEUContent() {
                       alt="ClubsNEU main interface"
                       width={1200}
                       height={675}
-                      layout="responsive"
                     />
                   </div>
                   <h4 className="text-primary-color-light">
@@ -313,7 +300,6 @@ function ClubsNEUContent() {
                       alt="ClubsNEU main interface"
                       width={1200}
                       height={675}
-                      layout="responsive"
                     />
                   </div>
                   <h4 className="text-primary-color-light">

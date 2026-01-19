@@ -45,7 +45,6 @@ function ReMoContent() {
                   alt="ClubsNEU main interface"
                   width={1200}
                   height={675}
-                  layout="responsive"
                 />
               </div>
             </section>
