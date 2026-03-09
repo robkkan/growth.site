@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useTransition } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from 'next/navigation';
 
@@ -14,6 +14,12 @@ const HeaderMain: React.FC<HeaderMainProps> = ({
   handleButtonClick,
 }) => {
   const router = useRouter();
+
+  // Prefetch both routes on mount so tab switches are instant
+  useEffect(() => {
+    router.prefetch('/');
+    router.prefetch('/writing');
+  }, [router]);
 
   const handleTabChange = (value: string) => {
     handleButtonClick(value);

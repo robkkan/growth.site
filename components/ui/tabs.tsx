@@ -76,7 +76,7 @@ const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
           <motion.span
             layoutId="bubble"
             className="absolute inset-[0.0625rem] z-0 bg-white rounded-[0.25rem]"
-            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+            transition={{ type: "spring", bounce: 0.15, duration: 0.3 }}
           />
         )}
         <span className="relative z-10">{children}</span>
