@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useTransition } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -34,6 +34,7 @@ function HomeContent() {
   });
   
   const router = useRouter();
+  const [, startTransition] = useTransition();
   const [headerText, setHeaderText] = useState("Hey, I'm Robert.");
 
   const { hoveredItem, handleMouseEnter, handleMouseLeave } = useHoverEffect();
@@ -41,7 +42,7 @@ function HomeContent() {
   const [isLeaving, setIsLeaving] = useState(false);
   const [isGridLeaving, setIsGridLeaving] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setSelectedButton("home");
@@ -66,17 +67,13 @@ function HomeContent() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleButtonClick = (buttonName: string) => {
     setSelectedButton(buttonName);
     if (buttonName === "writing") {
-      router.push('/writing');
+      startTransition(() => {
+        router.push('/writing');
+      });
     }
   };
 
@@ -93,12 +90,6 @@ function HomeContent() {
     setSelectedYear(year);
   };
 
-  useEffect(() => {
-    console.log("Page State Changed:", {
-      selectedYear,
-      selectedProject: selectedProject?.num,
-    });
-  }, [selectedYear, selectedProject]);
 
   const handleGridClick = () => {
     setIsLeaving(true);
