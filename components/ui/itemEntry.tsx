@@ -8,7 +8,7 @@ interface ItemEntryProps {
   href: string;
 }
 
-const ItemEntry: React.FC<ItemEntryProps> = ({ num, title, date, href }) => {
+const ItemEntry: React.FC<ItemEntryProps> = React.memo(({ num, title, date, href }) => {
   return (
     <Link href={href} className="block w-full">
       <div className="flex items-center py-[0.75rem]">
@@ -23,6 +23,6 @@ const ItemEntry: React.FC<ItemEntryProps> = ({ num, title, date, href }) => {
       </div>
     </Link>
   );
-};
+});
 
 export default ItemEntry;

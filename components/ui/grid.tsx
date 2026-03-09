@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 interface GridProps {
   rows: number;
   cols: number;
   noBorder?: boolean;
-  playLoadingAnimation?: boolean;
 }
 
 interface FallingCell {
@@ -15,23 +13,28 @@ interface FallingCell {
   startRow: number;
 }
 
-const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false, playLoadingAnimation = false }) => {
-  const [fallingCells, setFallingCells] = useState<FallingCell[]>([]);
-  const [nextId, setNextId] = useState(0);
-  const animationFrameRef = useRef<number>();
-  const FALL_SPEED = 0.005; 
+const FALL_SPEED = 0.005;
+const BASE_CELL_SIZE = 4;
 
+const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false }) => {
+  const [fallingCells, setFallingCells] = useState<FallingCell[]>([]);
+  const nextIdRef = useRef(0);
+  const animationFrameRef = useRef<number>();
+  const hasActiveCells = fallingCells.length > 0;
+
+  // Only run the rAF loop when there are active falling cells
   useEffect(() => {
+    if (!hasActiveCells) return;
+
     const animate = () => {
       const now = performance.now();
-      
-      setFallingCells(prev => 
-        prev.filter(cell => {
-          const elapsedTime = now - cell.startTime;
-          const currentRow = cell.startRow + elapsedTime * FALL_SPEED;
-          return currentRow <= rows;
-        })
-      );
+
+      setFallingCells(prev => {
+        const next = prev.filter(cell =>
+          cell.startRow + (now - cell.startTime) * FALL_SPEED <= rows
+        );
+        return next.length === prev.length ? prev : next;
+      });
 
       animationFrameRef.current = requestAnimationFrame(animate);
     };
@@ -42,87 +45,24 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false, playLoadingAn
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [rows]);
+  }, [hasActiveCells, rows]);
 
-  useEffect(() => {
-    // if (playLoadingAnimation) {
-    //   const timer1 = setTimeout(() => {
-    //     handleHoverStart(0, 4);
-    //   }, 50);
-
-    //   const timer2 = setTimeout(() => {
-    //     handleHoverStart(0, 3);
-    //   }, 200);
-
-    //   const timer3 = setTimeout(() => {
-    //     handleHoverStart(0, 2);
-    //   }, 350);
-
-    //   const timer4 = setTimeout(() => {
-    //     handleHoverStart(0, 1);
-    //   }, 500);
-
-    //   const timer5 = setTimeout(() => {
-    //     handleHoverStart(0, 5);
-    //   }, 50);
-
-    //   const timer6 = setTimeout(() => {
-    //     handleHoverStart(0, 6);
-    //   }, 200);
-      
-    //   const timer7 = setTimeout(() => {
-    //     handleHoverStart(0, 7);
-    //   }, 350);
-
-    //   const timer8 = setTimeout(() => {
-    //     handleHoverStart(0, 8);
-    //   }, 500);
-
-
-
-    //   return () => {
-    //     clearTimeout(timer1);
-    //     clearTimeout(timer2);
-    //     clearTimeout(timer3);
-    //     clearTimeout(timer4);
-    //     clearTimeout(timer5);
-    //     clearTimeout(timer6);
-    //     clearTimeout(timer7);
-    //     clearTimeout(timer8);
-    //     // clearTimeout(timer9);
-    //     // clearTimeout(timer10);
-    //   };
-    // }
-  }, [playLoadingAnimation]);
-
-  const handleHoverStart = (row: number, col: number) => {
+  const handleHoverStart = useCallback((row: number, col: number) => {
+    const id = nextIdRef.current++;
     setFallingCells(prev => [...prev, {
-      id: nextId,
+      id,
       col,
       startRow: row,
       startTime: performance.now()
     }]);
-    setNextId(prev => prev + 1);
-  };
+  }, []);
 
-  const isHighlighted = (row: number, col: number) => {
-    const now = performance.now();
-    return fallingCells.some(cell => {
-      const elapsedTime = now - cell.startTime;
-      const currentRow = Math.floor(cell.startRow + elapsedTime * FALL_SPEED);
-      return cell.col === col && currentRow === row;
-    });
-  };
-
-  const BASE_CELL_SIZE = 4; // Base size in rem
-  
-  // Remove GAP_SIZE since we'll use borders instead
   const idealWidth = BASE_CELL_SIZE * cols;
   const idealHeight = BASE_CELL_SIZE * rows;
 
   return (
-    <div 
-      style={{ 
+    <div
+      style={{
         backgroundColor: '#E6E6E6',
         padding: noBorder ? '0' : '1px',
         width: '100%',
@@ -133,12 +73,12 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false, playLoadingAn
         aspectRatio: `${idealWidth} / ${idealHeight}`,
       }}
     >
-      <div 
+      <div
         style={{
           display: 'grid',
           gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
           gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
-          gap: 0, // Remove gap
+          gap: 0,
           backgroundColor: '#E6E6E6',
           height: '100%',
           outline: 'none',
@@ -148,28 +88,16 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false, playLoadingAn
         {Array.from({ length: rows * cols }).map((_, index) => {
           const row = Math.floor(index / cols);
           const col = index % cols;
-          
+
           return (
-            <motion.div
+            <GridCell
               key={`cell-${row}-${col}`}
-              className="cursor-pointer bg-background"
-              onHoverStart={() => handleHoverStart(row, col)}
-              animate={{
-                backgroundColor: isHighlighted(row, col)
-                  ? '#FFFFFF'
-                  : 'var(--color-background)',
-              }}
-              transition={{
-                duration: 0.1,
-                ease: "easeOut"
-              }}
-              style={{
-                aspectRatio: '1/1',
-                width: '100%',
-                outline: 'none',
-                borderRight: col < cols - 1 ? '1px solid var(--grid-color)' : 'none',
-                borderBottom: row < rows - 1 ? '1px solid var(--grid-color)' : 'none',
-              }}
+              row={row}
+              col={col}
+              rows={rows}
+              cols={cols}
+              fallingCells={fallingCells}
+              onHoverStart={handleHoverStart}
             />
           );
         })}
@@ -177,5 +105,50 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false, playLoadingAn
     </div>
   );
 };
+
+interface GridCellProps {
+  row: number;
+  col: number;
+  rows: number;
+  cols: number;
+  fallingCells: FallingCell[];
+  onHoverStart: (row: number, col: number) => void;
+}
+
+const GridCell: React.FC<GridCellProps> = React.memo(function GridCell({
+  row,
+  col,
+  cols,
+  rows,
+  fallingCells,
+  onHoverStart,
+}) {
+  const now = performance.now();
+  const highlighted = fallingCells.some(cell => {
+    if (cell.col !== col) return false;
+    const currentRow = Math.floor(cell.startRow + (now - cell.startTime) * FALL_SPEED);
+    return currentRow === row;
+  });
+
+  const handleMouseEnter = useCallback(() => {
+    onHoverStart(row, col);
+  }, [row, col, onHoverStart]);
+
+  return (
+    <div
+      className="cursor-pointer"
+      onMouseEnter={handleMouseEnter}
+      style={{
+        aspectRatio: '1/1',
+        width: '100%',
+        outline: 'none',
+        borderRight: col < cols - 1 ? '1px solid var(--grid-color)' : 'none',
+        borderBottom: row < rows - 1 ? '1px solid var(--grid-color)' : 'none',
+        backgroundColor: highlighted ? '#FFFFFF' : 'var(--color-background)',
+        transition: 'background-color 0.1s ease-out',
+      }}
+    />
+  );
+});
 
 export default Grid;

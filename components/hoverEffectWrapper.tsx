@@ -39,8 +39,7 @@ const HoverEffectWrapper: React.FC<HoverEffectWrapperProps> = React.memo(functio
       onMouseEnter={handleMouseEnter}
       onMouseLeave={onMouseLeave}
       style={{
-        willChange: 'opacity',
-        backfaceVisibility: 'hidden'
+        willChange: hoveredItem ? 'opacity' : 'auto',
       }}
     >
       {children}
