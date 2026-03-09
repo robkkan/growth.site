@@ -26,7 +26,7 @@ const HoverEffectWrapper: React.FC<HoverEffectWrapperProps> = React.memo(functio
   // Optimize class computation
   const combinedClassName = React.useMemo(() => 
     cn(
-      "transition-opacity duration-500 ease-in-out transform-gpu",
+      "transition-opacity duration-200 ease-in-out transform-gpu",
       hoveredItem && hoveredItem !== id ? "opacity-40" : "opacity-100",
       className
     ),

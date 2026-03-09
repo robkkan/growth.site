@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 
 interface GridProps {
   rows: number;
@@ -18,23 +18,39 @@ const BASE_CELL_SIZE = 4;
 
 const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false }) => {
   const [fallingCells, setFallingCells] = useState<FallingCell[]>([]);
+  const [highlightedCells, setHighlightedCells] = useState<Set<string>>(new Set());
   const nextIdRef = useRef(0);
   const animationFrameRef = useRef<number>();
   const hasActiveCells = fallingCells.length > 0;
 
   // Only run the rAF loop when there are active falling cells
   useEffect(() => {
-    if (!hasActiveCells) return;
+    if (!hasActiveCells) {
+      setHighlightedCells(new Set());
+      return;
+    }
 
     const animate = () => {
       const now = performance.now();
 
-      setFallingCells(prev => {
-        const next = prev.filter(cell =>
-          cell.startRow + (now - cell.startTime) * FALL_SPEED <= rows
-        );
-        return next.length === prev.length ? prev : next;
-      });
+      // Compute highlighted set and prune dead cells in one pass
+      const nextCells: FallingCell[] = [];
+      const nextHighlighted = new Set<string>();
+
+      for (const cell of fallingCells) {
+        const currentRow = Math.floor(cell.startRow + (now - cell.startTime) * FALL_SPEED);
+        if (currentRow <= rows) {
+          nextCells.push(cell);
+          if (currentRow >= 0 && currentRow < rows) {
+            nextHighlighted.add(`${currentRow}-${cell.col}`);
+          }
+        }
+      }
+
+      setHighlightedCells(nextHighlighted);
+      if (nextCells.length !== fallingCells.length) {
+        setFallingCells(nextCells);
+      }
 
       animationFrameRef.current = requestAnimationFrame(animate);
     };
@@ -45,7 +61,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false }) => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [hasActiveCells, rows]);
+  }, [hasActiveCells, rows, fallingCells]);
 
   const handleHoverStart = useCallback((row: number, col: number) => {
     const id = nextIdRef.current++;
@@ -59,6 +75,15 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false }) => {
 
   const idealWidth = BASE_CELL_SIZE * cols;
   const idealHeight = BASE_CELL_SIZE * rows;
+
+  const cells = useMemo(() =>
+    Array.from({ length: rows * cols }).map((_, index) => {
+      const row = Math.floor(index / cols);
+      const col = index % cols;
+      return { row, col, key: `cell-${row}-${col}` };
+    }),
+    [rows, cols]
+  );
 
   return (
     <div
@@ -85,22 +110,17 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false }) => {
           border: 'none',
         }}
       >
-        {Array.from({ length: rows * cols }).map((_, index) => {
-          const row = Math.floor(index / cols);
-          const col = index % cols;
-
-          return (
-            <GridCell
-              key={`cell-${row}-${col}`}
-              row={row}
-              col={col}
-              rows={rows}
-              cols={cols}
-              fallingCells={fallingCells}
-              onHoverStart={handleHoverStart}
-            />
-          );
-        })}
+        {cells.map(({ row, col, key }) => (
+          <GridCell
+            key={key}
+            row={row}
+            col={col}
+            rows={rows}
+            cols={cols}
+            highlighted={highlightedCells.has(`${row}-${col}`)}
+            onHoverStart={handleHoverStart}
+          />
+        ))}
       </div>
     </div>
   );
@@ -111,7 +131,7 @@ interface GridCellProps {
   col: number;
   rows: number;
   cols: number;
-  fallingCells: FallingCell[];
+  highlighted: boolean;
   onHoverStart: (row: number, col: number) => void;
 }
 
@@ -120,16 +140,9 @@ const GridCell: React.FC<GridCellProps> = React.memo(function GridCell({
   col,
   cols,
   rows,
-  fallingCells,
+  highlighted,
   onHoverStart,
 }) {
-  const now = performance.now();
-  const highlighted = fallingCells.some(cell => {
-    if (cell.col !== col) return false;
-    const currentRow = Math.floor(cell.startRow + (now - cell.startTime) * FALL_SPEED);
-    return currentRow === row;
-  });
-
   const handleMouseEnter = useCallback(() => {
     onHoverStart(row, col);
   }, [row, col, onHoverStart]);

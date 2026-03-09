@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 
@@ -94,15 +94,13 @@ const Accordion = React.forwardRef<
   }, []); // Empty dependency array means this runs once on mount
 
   return (
-    <LayoutGroup id="accordion">
-      <AccordionContext.Provider value={contextValue}>
-        <AccordionPrimitive.Root
-          ref={ref}
-          className={cn('accordion-root', className)}
-          {...props}
-        />
-      </AccordionContext.Provider>
-    </LayoutGroup>
+    <AccordionContext.Provider value={contextValue}>
+      <AccordionPrimitive.Root
+        ref={ref}
+        className={cn('accordion-root', className)}
+        {...props}
+      />
+    </AccordionContext.Provider>
   );
 });
 Accordion.displayName = "Accordion"

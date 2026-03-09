@@ -37,7 +37,7 @@ const FileSystemVisualizer: React.FC<FileSystemVisualizerProps> = memo(({
         height: `${folderHeight}rem`
       }}
     >
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="popLayout">
         <motion.div 
           key={currentProject.num}
           className="absolute w-full h-full"
