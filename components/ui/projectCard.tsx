@@ -21,8 +21,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ title, svgSrc, link, isSmalle
         priority
         loading="eager"
         sizes={isSmaller ? "400px" : "525px"}
-        placeholder="blur"
-        blurDataURL={`data:image/svg+xml;base64,...`}
       />
     </div>
   </Link>
