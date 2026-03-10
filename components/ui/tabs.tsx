@@ -64,7 +64,7 @@ const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
         data-state={selectedTab === value ? "active" : "inactive"}
         onClick={() => setSelectedTab(value)}
         className={cn(
-          "relative inline-flex items-center justify-center whitespace-nowrap rounded-[0.25rem] px-[0.875rem] pt-[0.33rem] pb-[0.305rem]",
+          "relative inline-flex items-center justify-center whitespace-nowrap rounded-[0.125rem] px-[0.875rem] pt-[0.33rem] pb-[0.305rem]",
           "b_mono text-secondary-color transition-colors",
           "hover:text-primary-color focus-visible:outline-none",
           "data-[state=active]:text-primary-color",
@@ -75,7 +75,7 @@ const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
         {selectedTab === value && (
           <motion.span
             layoutId="bubble"
-            className="absolute inset-[0.0625rem] z-0 bg-white rounded-[0.25rem]"
+            className="absolute inset-[0.0625rem] z-0 bg-white rounded-[0.125rem]"
             transition={{ type: "spring", bounce: 0.15, duration: 0.3 }}
           />
         )}
