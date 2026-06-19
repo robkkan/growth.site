@@ -8,7 +8,6 @@ interface GridProps {
 }
 
 interface FallingCell {
-  id: number;
   col: number;
   startTime: number;
   startRow: number;
@@ -22,7 +21,6 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false }) => {
   const fallingCellsRef = useRef<FallingCell[]>([]);
   const animationFrameRef = useRef<number | undefined>(undefined);
   const runningRef = useRef(false);
-  const nextIdRef = useRef(0);
   const [, forceTick] = useReducer((x: number) => x + 1, 0);
 
   // The loop only runs while cells are falling; it self-terminates when the
@@ -61,7 +59,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false }) => {
     if (prefersReducedMotion) return;
     fallingCellsRef.current = [
       ...fallingCellsRef.current,
-      { id: nextIdRef.current++, col, startRow: row, startTime: performance.now() },
+      { col, startRow: row, startTime: performance.now() },
     ];
     ensureLoop();
   };
@@ -81,7 +79,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false }) => {
     <div
       aria-hidden="true"
       style={{
-        backgroundColor: '#E6E6E6',
+        backgroundColor: 'var(--grid-color)',
         padding: noBorder ? '0' : '1px',
         width: '100%',
         maxWidth: `${idealWidth}rem`,
@@ -97,7 +95,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false }) => {
           gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
           gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
           gap: 0,
-          backgroundColor: '#E6E6E6',
+          backgroundColor: 'var(--grid-color)',
           height: '100%',
           outline: 'none',
           border: 'none',

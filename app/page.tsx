@@ -214,7 +214,6 @@ function HomeContent() {
                   top: "-43%",
                   left: "-17%",
                   transformOrigin: "center center",
-                  ["--grid-color" as string]: "#E6E6E6",
                 }}
               >
                 <Grid rows={8} cols={10} noBorder={true} />

@@ -15,6 +15,7 @@
     --color-secondary: #5A5A5A;
     --color-tertiary: #CDCDCD;
     --color-ring: #0F0F0F;
+    --grid-color: #E6E6E6;
 
     /* Typography */
     --font-commit-mono: 'CommitMono', monospace;
