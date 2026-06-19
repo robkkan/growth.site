@@ -21,16 +21,12 @@ const HeaderMain: React.FC<HeaderMainProps> = ({
     router.prefetch('/writing');
   }, [router]);
 
-  const handleTabChange = (value: string) => {
-    handleButtonClick(value);
-  };
-
   return (
     <header className="w-full">
       <div className="flex flex-row justify-between items-center w-full">
         <h1 className="font-tiempos-headline">{title}</h1>
         <nav className="flex flex-row gap-1">
-          <Tabs defaultValue={selectedButton} onValueChange={handleTabChange}>
+          <Tabs defaultValue={selectedButton} onValueChange={handleButtonClick}>
             <TabsList>
               <TabsTrigger value="home">HOME</TabsTrigger>
               <TabsTrigger value="writing">WRITING</TabsTrigger>

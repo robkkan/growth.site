@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense, useTransition, useMemo, useCallback } from "react";
+import React, { useState, useEffect, Suspense, useTransition, useCallback } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -23,14 +23,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import Grid from "@/components/ui/grid";
 
 const projectData = getFeaturedProjects();
+const years = Object.keys(projectData).sort((a, b) => Number(b) - Number(a));
+const initialYear = years[0];
 
 function HomeContent() {
-  const years = useMemo(
-    () => Object.keys(projectData).sort((a, b) => Number(b) - Number(a)),
-    []
-  );
-  const initialYear = years[0];
-
   const [selectedButton, setSelectedButton] = useState<string>("home");
   const [selectedYear, setSelectedYear] = useState<string>(initialYear);
   const [selectedProject, setSelectedProject] = useState<Project | null>(() => {
