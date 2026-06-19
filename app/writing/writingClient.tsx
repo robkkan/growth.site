@@ -29,7 +29,6 @@ export default function WritingClient({ initialEntries }: WritingClientProps) {
   const [selectedButton, setSelectedButton] = React.useState<string>("writing");
   const { hoveredItem, handleMouseEnter, handleMouseLeave } = useHoverEffect();
   const { getTransition } = useStaggerAnimation({ baseDelay: 0.1 });
-  const [writingEntries] = React.useState<WritingEntry[]>(initialEntries);
 
   const handleButtonClick = (buttonName: string) => {
     setSelectedButton(buttonName);
@@ -40,35 +39,22 @@ export default function WritingClient({ initialEntries }: WritingClientProps) {
     }
   };
 
-  // Memoize the getTransition calls
-  const transitions = React.useMemo(
-    () => writingEntries.map((_, index) => getTransition(index + 1)),
-    [writingEntries.length, getTransition]
-  );
-
-  const headerTransition = React.useMemo(
-    () => getTransition(0),
-    [getTransition]
-  );
-
-  const footerTransition = React.useMemo(
-    () => getTransition(writingEntries.length + 1),
-    [writingEntries.length, getTransition]
-  );
+  const transitions = initialEntries.map((_, index) => getTransition(index + 1));
+  const footerTransition = getTransition(initialEntries.length + 1);
 
   return (
-    <main className="page-container page-container-default">
+    <main id="main" className="page-container page-container-default">
       <div className="flex flex-col gap-[2.25rem] items-center w-full">
         <section className="flex flex-col gap-[0.75rem] w-full">
           <HeaderMain
-            headerText="Writing."
+            title="Writing."
             selectedButton={selectedButton}
             handleButtonClick={handleButtonClick}
           />
 
           <div className="flex flex-col w-full">
-            {writingEntries.length > 0 ? (
-              writingEntries.map((entry, index) => (
+            {initialEntries.length > 0 ? (
+              initialEntries.map((entry, index) => (
                 <StaggerWrapper key={entry.num} {...transitions[index]}>
                   <HoverEffectWrapper
                     id={entry.num}

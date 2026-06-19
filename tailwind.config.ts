@@ -2,7 +2,6 @@ import type { Config } from "tailwindcss";
 import typography from '@tailwindcss/typography'
 
 const config: Config = {
-    darkMode: ["class"],
     content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -24,7 +23,11 @@ const config: Config = {
   			'primary-color': 'var(--color-primary)',
   			'primary-color-light': 'var(--color-primary-light)',
   			'secondary-color': 'var(--color-secondary)',
-  			'tertiary-color': 'var(--color-tertiary)'
+  			'tertiary-color': 'var(--color-tertiary)',
+  			ring: 'var(--color-ring)'
+  		},
+  		transitionDuration: {
+  			'400': '400ms'
   		},
   		fontFamily: {
   			'commit-mono': ['var(--font-commit-mono)', 'monospace'],

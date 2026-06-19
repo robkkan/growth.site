@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
+import { useReducedMotion } from 'framer-motion';
 
 interface GridProps {
   rows: number;
@@ -7,63 +8,78 @@ interface GridProps {
 }
 
 interface FallingCell {
-  id: number;
   col: number;
   startTime: number;
   startRow: number;
 }
 
 const FALL_SPEED = 0.005;
-const BASE_CELL_SIZE = 4;
+const BASE_CELL_SIZE = 4; // rem
 
 const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false }) => {
-  const [fallingCells, setFallingCells] = useState<FallingCell[]>([]);
-  const nextIdRef = useRef(0);
-  const animationFrameRef = useRef<number>();
-  const hasActiveCells = fallingCells.length > 0;
+  const prefersReducedMotion = useReducedMotion();
+  const fallingCellsRef = useRef<FallingCell[]>([]);
+  const animationFrameRef = useRef<number | undefined>(undefined);
+  const runningRef = useRef(false);
+  const [, forceTick] = useReducer((x: number) => x + 1, 0);
 
-  // Only run the rAF loop when there are active falling cells
-  useEffect(() => {
-    if (!hasActiveCells) return;
+  // The loop only runs while cells are falling; it self-terminates when the
+  // last cell drops off the bottom, so an idle grid does zero work per frame.
+  const ensureLoop = () => {
+    if (runningRef.current) return;
+    runningRef.current = true;
 
     const animate = () => {
       const now = performance.now();
-
-      setFallingCells(prev => {
-        const next = prev.filter(cell =>
-          cell.startRow + (now - cell.startTime) * FALL_SPEED <= rows
-        );
-        return next.length === prev.length ? prev : next;
+      fallingCellsRef.current = fallingCellsRef.current.filter((cell) => {
+        const currentRow = cell.startRow + (now - cell.startTime) * FALL_SPEED;
+        return currentRow <= rows;
       });
+      forceTick(); // re-render to advance the highlight as cells fall
 
-      animationFrameRef.current = requestAnimationFrame(animate);
+      if (fallingCellsRef.current.length > 0) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+      } else {
+        runningRef.current = false;
+      }
     };
 
     animationFrameRef.current = requestAnimationFrame(animate);
+  };
+
+  useEffect(() => {
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [hasActiveCells, rows]);
-
-  const handleHoverStart = useCallback((row: number, col: number) => {
-    const id = nextIdRef.current++;
-    setFallingCells(prev => [...prev, {
-      id,
-      col,
-      startRow: row,
-      startTime: performance.now()
-    }]);
   }, []);
+
+  const handleHoverStart = (row: number, col: number) => {
+    if (prefersReducedMotion) return;
+    fallingCellsRef.current = [
+      ...fallingCellsRef.current,
+      { col, startRow: row, startTime: performance.now() },
+    ];
+    ensureLoop();
+  };
+
+  const isHighlighted = (row: number, col: number) => {
+    const now = performance.now();
+    return fallingCellsRef.current.some((cell) => {
+      const currentRow = Math.floor(cell.startRow + (now - cell.startTime) * FALL_SPEED);
+      return cell.col === col && currentRow === row;
+    });
+  };
 
   const idealWidth = BASE_CELL_SIZE * cols;
   const idealHeight = BASE_CELL_SIZE * rows;
 
   return (
     <div
+      aria-hidden="true"
       style={{
-        backgroundColor: '#E6E6E6',
+        backgroundColor: 'var(--grid-color)',
         padding: noBorder ? '0' : '1px',
         width: '100%',
         maxWidth: `${idealWidth}rem`,
@@ -79,7 +95,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false }) => {
           gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
           gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
           gap: 0,
-          backgroundColor: '#E6E6E6',
+          backgroundColor: 'var(--grid-color)',
           height: '100%',
           outline: 'none',
           border: 'none',
@@ -90,14 +106,19 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false }) => {
           const col = index % cols;
 
           return (
-            <GridCell
+            <div
               key={`cell-${row}-${col}`}
-              row={row}
-              col={col}
-              rows={rows}
-              cols={cols}
-              fallingCells={fallingCells}
-              onHoverStart={handleHoverStart}
+              className={`cursor-pointer transition-colors duration-100 ease-out ${
+                isHighlighted(row, col) ? 'bg-white' : 'bg-background'
+              }`}
+              onMouseEnter={() => handleHoverStart(row, col)}
+              style={{
+                aspectRatio: '1/1',
+                width: '100%',
+                outline: 'none',
+                borderRight: col < cols - 1 ? '1px solid var(--grid-color)' : 'none',
+                borderBottom: row < rows - 1 ? '1px solid var(--grid-color)' : 'none',
+              }}
             />
           );
         })}
@@ -105,50 +126,5 @@ const Grid: React.FC<GridProps> = ({ rows, cols, noBorder = false }) => {
     </div>
   );
 };
-
-interface GridCellProps {
-  row: number;
-  col: number;
-  rows: number;
-  cols: number;
-  fallingCells: FallingCell[];
-  onHoverStart: (row: number, col: number) => void;
-}
-
-const GridCell: React.FC<GridCellProps> = React.memo(function GridCell({
-  row,
-  col,
-  cols,
-  rows,
-  fallingCells,
-  onHoverStart,
-}) {
-  const now = performance.now();
-  const highlighted = fallingCells.some(cell => {
-    if (cell.col !== col) return false;
-    const currentRow = Math.floor(cell.startRow + (now - cell.startTime) * FALL_SPEED);
-    return currentRow === row;
-  });
-
-  const handleMouseEnter = useCallback(() => {
-    onHoverStart(row, col);
-  }, [row, col, onHoverStart]);
-
-  return (
-    <div
-      className="cursor-pointer"
-      onMouseEnter={handleMouseEnter}
-      style={{
-        aspectRatio: '1/1',
-        width: '100%',
-        outline: 'none',
-        borderRight: col < cols - 1 ? '1px solid var(--grid-color)' : 'none',
-        borderBottom: row < rows - 1 ? '1px solid var(--grid-color)' : 'none',
-        backgroundColor: highlighted ? '#FFFFFF' : 'var(--color-background)',
-        transition: 'background-color 0.1s ease-out',
-      }}
-    />
-  );
-});
 
 export default Grid;

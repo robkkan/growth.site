@@ -4,6 +4,7 @@ import "./globals.css";
 import { Jacques_Francois } from 'next/font/google';
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/siteConfig";
 
 const commitMono = localFont({
   src: "../public/fonts/CommitMono.woff2",
@@ -52,8 +53,12 @@ const jacquesFrancois = Jacques_Francois({
 });
 
 export const metadata: Metadata = {
-  title: "Robert Kan",
-  description: "Robert Kan's portfolio showcasing product design work and writing about growth",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: [
       { url: '/favicon/favicon.ico', sizes: '32x32' },
@@ -64,14 +69,24 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: 'Robert Kan',
-    description: "Robert Kan's portfolio showcasing product design work and writing about growth",
+    type: 'website',
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
     images: [{
-      url: '/other-assets/thumbnail.png',
+      url: OG_IMAGE,
       width: 1920,
       height: 1080,
       alt: 'Robert Kan Portfolio',
     }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    creator: '@robertkkan',
+    images: [OG_IMAGE],
   },
 };
 
@@ -85,6 +100,12 @@ export default function RootLayout({
       <body
         className={`${commitMono.variable} ${tiemposHeadline.variable} ${tiemposText.variable} ${jacquesFrancois.variable} antialiased bg-background min-h-screen`}
       >
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded-[0.375rem] focus:bg-fill focus:px-2 focus:py-1 focus:shadow-inset-tertiary b_mono"
+        >
+          Skip to content
+        </a>
         {children}
         <SpeedInsights />
         <Analytics />

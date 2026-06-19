@@ -1,10 +1,9 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ReactNode } from 'react';
 
 interface StaggerWrapperProps {
   children: ReactNode;
   skipAnimation?: boolean;
-  index?: number;
   initial: { opacity: number; y: number };
   animate: { opacity: number; y: number };
   transition: {
@@ -15,15 +14,17 @@ interface StaggerWrapperProps {
   className?: string;
 }
 
-export const StaggerWrapper = ({ 
-  children, 
+export const StaggerWrapper = ({
+  children,
   skipAnimation = false,
-  initial, 
-  animate, 
+  initial,
+  animate,
   transition,
-  className = '' 
+  className = ''
 }: StaggerWrapperProps) => {
-  if (skipAnimation) {
+  const prefersReducedMotion = useReducedMotion();
+
+  if (skipAnimation || prefersReducedMotion) {
     return <div className={className}>{children}</div>;
   }
 
@@ -33,10 +34,7 @@ export const StaggerWrapper = ({
       initial={initial}
       animate={animate}
       transition={transition}
-      style={{
-        willChange: 'transform, opacity',
-        backfaceVisibility: 'hidden'
-      }}
+      style={{ backfaceVisibility: 'hidden' }}
     >
       {children}
     </motion.div>

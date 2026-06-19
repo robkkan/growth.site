@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 
 const Footer: React.FC = () => {
   return (
@@ -29,14 +28,14 @@ const Footer: React.FC = () => {
           </li>
           <li className="mx-0 text-primary-color">/</li>
           <li>
-            <Link 
-              href="#"
+            <a
+              href="https://vs.co/l4rt9tds"
               className="b_mono text-primary-color link-underline link-underline-hover"
               target="_blank"
               rel="noopener noreferrer"
             >
               PHOTOS
-            </Link>
+            </a>
           </li>
           <li className="mx-0 text-primary-color">/</li>
           <li>

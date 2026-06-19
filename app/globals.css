@@ -13,7 +13,9 @@
     --color-primary: #0F0F0F;
     --color-primary-light: #1F1F1F;
     --color-secondary: #5A5A5A;
-    --color-tertiary: #CDCDCD; 
+    --color-tertiary: #CDCDCD;
+    --color-ring: #0F0F0F;
+    --grid-color: #E6E6E6;
 
     /* Typography */
     --font-commit-mono: 'CommitMono', monospace;
@@ -102,6 +104,15 @@
   ::-moz-selection {
     background-color: var(--color-select);
     color: var(--color-primary-light);
+  }
+
+  /* Visible keyboard focus for links and custom interactive elements.
+     Buttons supply their own focus-visible ring via the Button/Tabs components. */
+  a:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 0.125rem;
   }
 }
 
@@ -278,4 +289,17 @@
 .mdx-ol > li {
   display: list-item;
   padding-left: 0.25rem;
+}
+
+/* Respect users who prefer reduced motion: neutralize CSS transitions/animations.
+   framer-motion animations are additionally gated via useReducedMotion in components. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default:
           "text-secondary-color hover:text-primary-color bg-fill",
         selected:
-          "text-primary-color bg-select shadow-inset-primary",
+          "text-primary-color bg-select shadow-inset-tertiary",
       },
     },
     defaultVariants: {

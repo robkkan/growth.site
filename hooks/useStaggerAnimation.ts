@@ -1,11 +1,8 @@
 interface StaggerConfig {
   baseDelay?: number;
-  staggerDelay?: number;
-  duration?: number;
-  y?: number;
 }
 
-export const useStaggerAnimation = ({ baseDelay = 0.1 }) => {
+export const useStaggerAnimation = ({ baseDelay = 0.1 }: StaggerConfig = {}) => {
   const getTransition = (index: number) => ({
     initial: { opacity: 0, y: 12 },
     animate: { opacity: 1, y: 0 },

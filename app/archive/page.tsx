@@ -17,8 +17,9 @@ export default function Archive() {
   const { getTransition } = useStaggerAnimation({ baseDelay: 0.1 });
 
   return (
-    <main className="page-container page-container-default">
+    <main id="main" className="page-container page-container-default">
       <div className="flex flex-col gap-3 items-center w-full mx-auto">
+        <h1 className="sr-only">All works</h1>
         <Breadcrumbs crumbs={[{ label: "ALL WORKS" }]} />
 
         <div className="flex flex-col gap-[2.25rem] w-full">

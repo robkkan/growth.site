@@ -37,7 +37,7 @@ function ClubsNEUContent() {
   const { getTransition } = useStaggerAnimation({ baseDelay: 0.1 });
 
   return (
-    <main className="page-container page-container-study">
+    <main id="main" className="page-container page-container-study">
       <div className="flex flex-col gap-4 items-start w-full mx-auto">
         <Breadcrumbs crumbs={crumbs} />
 
@@ -45,10 +45,10 @@ function ClubsNEUContent() {
           <StaggerWrapper {...getTransition(0)}>
             <section className="flex flex-col gap-[1.5rem]">
               <div className="flex flex-col gap-[0.75rem]">
-                <h2>
+                <h1 className="text-title">
                   Community database focused on discovery and student-club
                   connection
-                </h2>
+                </h1>
                 <p className="b_serif">
                   From March to December 2023, as the founding designer, I worked
                   with an engineer to ship a new platform that helps Northeastern
@@ -66,9 +66,10 @@ function ClubsNEUContent() {
               <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                 <Image
                   src={mainImage}
-                  alt="ClubsNEU main interface"
+                  alt="ClubsNEU main interface showing the club discovery database"
                   width={1200}
                   height={675}
+                  className="w-full h-auto"
                 />
               </div>
             </section>
@@ -98,9 +99,10 @@ function ClubsNEUContent() {
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                   <Image
                     src={participationImage}
-                    alt="ClubsNEU main interface"
+                    alt="Chart of application and participation rates for 5 well-known Northeastern campus clubs"
                     width={1200}
                     height={675}
+                    className="w-full h-auto"
                   />
                 </div>
               </div>
@@ -116,25 +118,28 @@ function ClubsNEUContent() {
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                   <Image
                     src={instagramImage}
-                    alt="ClubsNEU main interface"
+                    alt="Instagram as a club discovery channel and its pain points"
                     width={1200}
                     height={675}
+                    className="w-full h-auto"
                   />
                 </div>
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                   <Image
                     src={fallfestImage}
-                    alt="ClubsNEU main interface"
+                    alt="Northeastern's FallFest platform and its pain points for club discovery"
                     width={1200}
                     height={675}
+                    className="w-full h-auto"
                   />
                 </div>
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                   <Image
                     src={anthologyImage}
-                    alt="ClubsNEU main interface"
+                    alt="Anthology platform and its pain points for club discovery"
                     width={1200}
                     height={675}
+                    className="w-full h-auto"
                   />
                 </div>
               </div>
@@ -168,9 +173,10 @@ function ClubsNEUContent() {
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                   <Image
                     src={productImage}
-                    alt="ClubsNEU main interface"
+                    alt="ClubsNEU single platform unifying search, recommendations, and complete club information"
                     width={1200}
                     height={675}
+                    className="w-full h-auto"
                   />
                 </div>
               </div>
@@ -192,17 +198,19 @@ function ClubsNEUContent() {
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                   <Image
                     src={toolbarIterationImage}
-                    alt="ClubsNEU main interface"
+                    alt="Toolbar orientation iterations comparing horizontal and vertical filtering layouts"
                     width={1200}
                     height={675}
+                    className="w-full h-auto"
                   />
                 </div>
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                   <Image
                     src={toolbarFinalImage}
-                    alt="ClubsNEU main interface"
+                    alt="Final chosen toolbar design for filtering and sorting the club database"
                     width={1200}
                     height={675}
+                    className="w-full h-auto"
                   />
                 </div>
               </div>
@@ -218,9 +226,10 @@ function ClubsNEUContent() {
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                   <Image
                     src={cardImage}
-                    alt="ClubsNEU main interface"
+                    alt="Club card design explorations showing basic club info to encourage exploration"
                     width={1200}
                     height={675}
+                    className="w-full h-auto"
                   />
                 </div>
               </div>
@@ -236,17 +245,19 @@ function ClubsNEUContent() {
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                   <Image
                     src={searchIterationImage}
-                    alt="ClubsNEU main interface"
+                    alt="Search iterations comparing a new page versus a full-screen overlay for club details"
                     width={1200}
                     height={675}
+                    className="w-full h-auto"
                   />
                 </div>
                 <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                   <Image
                     src={searchFinalImage}
-                    alt="ClubsNEU main interface"
+                    alt="Final full-screen overlay design for efficiently browsing club details"
                     width={1200}
                     height={675}
+                    className="w-full h-auto"
                   />
                 </div>
               </div>
@@ -269,9 +280,10 @@ function ClubsNEUContent() {
                   <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                     <Image
                       src={finalDatabase}
-                      alt="ClubsNEU main interface"
+                      alt="Final ClubsNEU database design for searching, filtering, and discovering clubs"
                       width={1200}
                       height={675}
+                      className="w-full h-auto"
                     />
                   </div>
                   <h4 className="text-primary-color-light">
@@ -283,9 +295,10 @@ function ClubsNEUContent() {
                   <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                     <Image
                       src={finalClubPage}
-                      alt="ClubsNEU main interface"
+                      alt="Final ClubsNEU club page aggregating info from socials, calendars, and websites"
                       width={1200}
                       height={675}
+                      className="w-full h-auto"
                     />
                   </div>
                   <h4 className="text-primary-color-light">
@@ -297,9 +310,10 @@ function ClubsNEUContent() {
                   <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                     <Image
                       src={finalMobile}
-                      alt="ClubsNEU main interface"
+                      alt="Final ClubsNEU responsive mobile design adapting across devices"
                       width={1200}
                       height={675}
+                      className="w-full h-auto"
                     />
                   </div>
                   <h4 className="text-primary-color-light">

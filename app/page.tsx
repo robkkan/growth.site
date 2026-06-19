@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense, useTransition, useMemo, useCallback } from "react";
+import React, { useState, useEffect, Suspense, useTransition, useCallback } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -23,11 +23,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import Grid from "@/components/ui/grid";
 
 const projectData = getFeaturedProjects();
+const years = Object.keys(projectData).sort((a, b) => Number(b) - Number(a));
+const initialYear = years[0];
 
 function HomeContent() {
-  const years = useMemo(() => Object.keys(projectData).sort((a, b) => Number(b) - Number(a)), []);
-  const initialYear = years[0];
-
   const [selectedButton, setSelectedButton] = useState<string>("home");
   const [selectedYear, setSelectedYear] = useState<string>(initialYear);
   const [selectedProject, setSelectedProject] = useState<Project | null>(() => {
@@ -36,30 +35,29 @@ function HomeContent() {
 
   const router = useRouter();
   const [, startTransition] = useTransition();
-  const [headerText, setHeaderText] = useState("Hey, I'm Robert.");
 
   const { hoveredItem, handleMouseEnter, handleMouseLeave } = useHoverEffect();
 
-  useEffect(() => {
-    const handleResize = () => {
-      setHeaderText(
-        window.innerWidth <= 470 ? "Robert." : "Hey, I'm Robert."
-      );
-    };
+  const [isLoading, setIsLoading] = useState(true);
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
+    return () => clearTimeout(timer);
   }, []);
 
-  const handleButtonClick = useCallback((buttonName: string) => {
-    setSelectedButton(buttonName);
-    if (buttonName === "writing") {
-      startTransition(() => {
-        router.push('/writing');
-      });
-    }
-  }, [router, startTransition]);
+  const handleButtonClick = useCallback(
+    (buttonName: string) => {
+      setSelectedButton(buttonName);
+      if (buttonName === "writing") {
+        startTransition(() => {
+          router.push("/writing");
+        });
+      }
+    },
+    [router, startTransition]
+  );
 
   const handleProjectSelect = useCallback((projectId: string) => {
     const [year, num] = projectId.split("-");
@@ -77,19 +75,24 @@ function HomeContent() {
   const currentProjects = projectData[selectedYear] || [];
 
   return (
-    <main className="page-container page-container-default">
+    <main id="main" className="page-container page-container-default">
       <div className="flex flex-col gap-5 items-center w-full">
         {/* Introduction Section */}
         <section className="flex flex-col gap-2 w-full">
           <HeaderMain
-            headerText={headerText}
+            title={
+              <>
+                <span className="hidden min-[471px]:inline">Hey, I&apos;m Robert.</span>
+                <span className="min-[471px]:hidden">Robert.</span>
+              </>
+            }
             selectedButton={selectedButton}
             handleButtonClick={handleButtonClick}
           />
 
           <div className="flex flex-col gap-2 w-full">
             <p className="b_mono">
-            I design products that present with  thoughtful simplicity, fading into the background through familiarity.   Previously, I was at{" "}
+            I design products that present with thoughtful simplicity, fading into the background through familiarity. Previously, I was at{" "}
               <span className="group">
                 <a
                   href="https://business.linkedin.com/marketing-solutions/ads/linkedin-accelerate"
@@ -185,7 +188,7 @@ function HomeContent() {
               className="w-full"
               layoutId="expandingGrid"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              animate={{ opacity: isLoading ? 0 : 1 }}
               transition={{
                 duration: 0.4,
                 ease: [0.22, 1, 0.7, 1],
@@ -209,26 +212,20 @@ function HomeContent() {
                 {/* Right fade */}
                 <div className="absolute top-[0rem] bottom-[0rem] right-[0rem] w-[2rem] bg-gradient-to-l from-background to-transparent" />
               </div>
-              <div
+              <motion.div
+                layoutId="gridInner"
                 className="w-full"
-                style={
-                  {
-                    position: "absolute",
-                    width: "142%",
-                    aspectRatio: "40.6875 / 32.5625",
-                    top: "-43%",
-                    left: "-17%",
-                    transformOrigin: "center center",
-                    "--grid-color": "#E6E6E6",
-                  } as any
-                }
+                style={{
+                  position: "absolute",
+                  width: "142%",
+                  aspectRatio: "40.6875 / 32.5625",
+                  top: "-43%",
+                  left: "-17%",
+                  transformOrigin: "center center",
+                }}
               >
-                <Grid
-                  rows={8}
-                  cols={10}
-                  noBorder={true}
-                />
-              </div>
+                <Grid rows={8} cols={10} noBorder={true} />
+              </motion.div>
             </motion.div>
           </div>
 
@@ -268,7 +265,6 @@ function HomeContent() {
                 </Accordion>
               </div>
               <FileSystemVisualizer
-                selectedYear={selectedYear}
                 projects={currentProjects}
                 selectedProject={selectedProject}
               />

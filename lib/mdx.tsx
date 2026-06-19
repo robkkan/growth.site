@@ -9,7 +9,7 @@ export const mdxComponents = {
     <p className="b_serif" {...props} />
   ),
   h3: (props: React.HTMLProps<HTMLHeadingElement>) => (
-    <h3 className="t" {...props} />
+    <h3 {...props} />
   ),
   blockquote: (props: React.HTMLProps<HTMLQuoteElement>) => (
     <blockquote className="mdx-blockquote" {...props} />

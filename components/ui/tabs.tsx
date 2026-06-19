@@ -59,14 +59,13 @@ const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
     return (
       <button
         ref={ref}
-        role="tab"
-        aria-selected={selectedTab === value}
+        aria-current={selectedTab === value ? "page" : undefined}
         data-state={selectedTab === value ? "active" : "inactive"}
         onClick={() => setSelectedTab(value)}
         className={cn(
           "relative inline-flex items-center justify-center whitespace-nowrap rounded-[0.125rem] px-[0.875rem] pt-[0.33rem] pb-[0.305rem]",
           "b_mono text-secondary-color transition-colors",
-          "hover:text-primary-color focus-visible:outline-none",
+          "hover:text-primary-color focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
           "data-[state=active]:text-primary-color",
           className
         )}

@@ -11,13 +11,15 @@ export default function GrowthPage() {
   ];
 
   return (
-    <main 
+    <main
+      id="main"
       className="w-full mx-auto"
       style={{
         maxWidth: 'calc(40.7rem + 6rem)',
         padding: '12vh 3rem 4vh',
       }}
     >
+      <h1 className="sr-only">My growth</h1>
       {/* Breadcrumbs Section */}
       <div className="mb-[4.8rem]">
         <Breadcrumbs crumbs={crumbs} />
