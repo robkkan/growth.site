@@ -25,6 +25,7 @@ interface WritingClientProps {
 
 export default function WritingClient({ initialEntries }: WritingClientProps) {
   const router = useRouter();
+  const [, startTransition] = React.useTransition();
   const [selectedButton, setSelectedButton] = React.useState<string>("writing");
   const { hoveredItem, handleMouseEnter, handleMouseLeave } = useHoverEffect();
   const { getTransition } = useStaggerAnimation({ baseDelay: 0.1 });
@@ -33,7 +34,9 @@ export default function WritingClient({ initialEntries }: WritingClientProps) {
   const handleButtonClick = (buttonName: string) => {
     setSelectedButton(buttonName);
     if (buttonName === "home") {
-      router.push("/");
+      startTransition(() => {
+        router.push("/");
+      });
     }
   };
 

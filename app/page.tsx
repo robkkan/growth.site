@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useTransition, useMemo, useCallback } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -22,18 +22,23 @@ import { allProjects } from "@/lib/data/projectData";
 import { AnimatePresence, motion } from "framer-motion";
 import Grid from "@/components/ui/grid";
 
+const projectData = getFeaturedProjects();
+
 function HomeContent() {
-  const projectData = getFeaturedProjects();
-  const years = Object.keys(projectData).sort((a, b) => Number(b) - Number(a));
-  const initialYear = years[0]; 
+  const years = useMemo(
+    () => Object.keys(projectData).sort((a, b) => Number(b) - Number(a)),
+    []
+  );
+  const initialYear = years[0];
 
   const [selectedButton, setSelectedButton] = useState<string>("home");
   const [selectedYear, setSelectedYear] = useState<string>(initialYear);
   const [selectedProject, setSelectedProject] = useState<Project | null>(() => {
     return projectData[initialYear]?.find((p) => p.num === "005") || null;
   });
-  
+
   const router = useRouter();
+  const [, startTransition] = useTransition();
 
   const { hoveredItem, handleMouseEnter, handleMouseLeave } = useHoverEffect();
 
@@ -46,25 +51,32 @@ function HomeContent() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleButtonClick = (buttonName: string) => {
-    setSelectedButton(buttonName);
-    if (buttonName === "writing") {
-      router.push('/writing');
-    }
-  };
+  const handleButtonClick = useCallback(
+    (buttonName: string) => {
+      setSelectedButton(buttonName);
+      if (buttonName === "writing") {
+        startTransition(() => {
+          router.push("/writing");
+        });
+      }
+    },
+    [router, startTransition]
+  );
 
-  const handleProjectSelect = (projectId: string) => {
+  const handleProjectSelect = useCallback((projectId: string) => {
     const [year, num] = projectId.split("-");
     const project = projectData[year]?.find((p) => p.num === num);
     if (project) {
       setSelectedProject(project);
       setSelectedYear(year);
     }
-  };
+  }, []);
 
-  const handleYearSelect = (year: string) => {
+  const handleYearSelect = useCallback((year: string) => {
     setSelectedYear(year);
-  };
+  }, []);
+
+  const currentProjects = projectData[selectedYear] || [];
 
   return (
     <main id="main" className="page-container page-container-default">
@@ -81,7 +93,7 @@ function HomeContent() {
             selectedButton={selectedButton}
             handleButtonClick={handleButtonClick}
           />
-          
+
           <div className="flex flex-col gap-2 w-full">
             <p className="b_mono">
             I design products that present with thoughtful simplicity, fading into the background through familiarity. Previously, I was at{" "}
@@ -226,9 +238,9 @@ function HomeContent() {
             {/* Desktop view (>=780px) */}
             <div className="hidden md:flex flex-row gap-[3rem] w-full">
               <div className="w-[17.5rem] mx-auto">
-                <Accordion 
-                  type="single" 
-                  defaultValue={initialYear} 
+                <Accordion
+                  type="single"
+                  defaultValue={initialYear}
                   collapsible
                 >
                   {years.map((year) => (
@@ -257,7 +269,7 @@ function HomeContent() {
                 </Accordion>
               </div>
               <FileSystemVisualizer
-                projects={projectData[selectedYear] || []}
+                projects={currentProjects}
                 selectedProject={selectedProject}
               />
             </div>
