@@ -1,6 +1,14 @@
 import React from 'react';
 import { getAllPosts } from '@/lib/mdx';
 import WritingClient from './writingClient';
+import { buildPageMetadata } from '@/lib/metadata';
+import { SITE_NAME } from '@/lib/siteConfig';
+
+export const metadata = buildPageMetadata({
+  title: `Writing — ${SITE_NAME}`,
+  description: 'Essays and notes by Robert Kan on design, growth, and building products.',
+  path: '/writing',
+});
 
 // Server Component that fetches data
 async function WritingPage() {

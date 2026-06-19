@@ -20,7 +20,7 @@ function ReMoContent() {
     : [{ label: "REMO MOBILE" }];
 
   return (
-    <main className="page-container page-container-study">
+    <main id="main" className="page-container page-container-study">
       <div className="flex flex-col gap-4 items-start w-full mx-auto">
         <Breadcrumbs crumbs={crumbs} />
 
@@ -28,10 +28,10 @@ function ReMoContent() {
           <StaggerWrapper {...getTransition(0)}>
             <section className="flex flex-col gap-[1.5rem]">
               <div className="flex flex-col gap-[0.75rem]">
-                <h2>
+                <h1 className="text-title">
                   Speeding up teacher workflows to foster connection through
                   reading
-                </h2>
+                </h1>
                 <p className="b_serif">
                   From January to April 2023, as a product designer, I worked with
                   a team to launch a mobile app that connects teachers and
@@ -42,10 +42,10 @@ function ReMoContent() {
               <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                 <Image
                   src={mainImage}
-                  alt="ClubsNEU main interface"
+                  alt="ReMo mobile app main interface"
                   width={1200}
                   height={675}
-                  layout="responsive"
+                  className="w-full h-auto"
                 />
               </div>
             </section>

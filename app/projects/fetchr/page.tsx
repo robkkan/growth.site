@@ -22,7 +22,7 @@ function FetchrContent() {
     : [{ label: "FETCHR APP" }];
 
   return (
-    <main className="page-container page-container-study">
+    <main id="main" className="page-container page-container-study">
       <div className="flex flex-col gap-4 items-start w-full mx-auto">
         <Breadcrumbs crumbs={crumbs} />
 
@@ -30,10 +30,10 @@ function FetchrContent() {
           <StaggerWrapper {...getTransition(0)}>
             <section className="flex flex-col gap-[1.5rem]">
               <div className="flex flex-col gap-[0.75rem]">
-                <h2>
+                <h1 className="text-title">
                   Building a AI personal clothing shopper that learns your
                   style
-                </h2>
+                </h1>
                 <p className="b_serif">
                   As the sole designer at Fetchr, a pre-seed YC-backed startup, I
                   am leading the design of an AI stylist that builds trust and
@@ -52,28 +52,28 @@ function FetchrContent() {
               <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                 <Image
                   src={styleImage}
-                  alt="ClubsNEU main interface"
+                  alt="Fetchr AI stylist screen showing personalized clothing recommendations matched to a user's style"
                   width={1200}
                   height={675}
-                  layout="responsive"
+                  className="w-full h-auto"
                 />
               </div>
               <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                 <Image
                   src={chatImage}
-                  alt="ClubsNEU main interface"
+                  alt="Fetchr conversational chat interface where users describe their style preferences to the AI shopper"
                   width={1200}
                   height={675}
-                  layout="responsive"
+                  className="w-full h-auto"
                 />
               </div>
               <div className="w-full inner-shadow-tertiary rounded-[0.375rem]">
                 <Image
                   src={waistImage}
-                  alt="ClubsNEU main interface"
+                  alt="Fetchr fit and sizing screen for capturing waist measurements to improve clothing fit accuracy"
                   width={1200}
                   height={675}
-                  layout="responsive"
+                  className="w-full h-auto"
                 />
               </div>
             </section>

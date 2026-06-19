@@ -3,7 +3,7 @@
 import * as React from "react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion"
-import { useRef, useEffect } from "react"
+import { useRef } from "react"
 import { useRouter } from "next/navigation"
 
 import { cn } from "@/lib/utils"
@@ -86,13 +86,6 @@ const Accordion = React.forwardRef<
     setHoveredProject: () => {}
   }), [hoveredItem, handleMouseEnter, handleMouseLeave, selectedContent, selectedYear, currentProject]);
 
-  // Preload all project images on mount
-  useEffect(() => {
-    allProjects.forEach(project => {
-      preloadImage(project.svgSrc);
-    });
-  }, []); // Empty dependency array means this runs once on mount
-
   return (
     <LayoutGroup id="accordion">
       <AccordionContext.Provider value={contextValue}>
@@ -154,7 +147,7 @@ const AccordionTrigger = React.forwardRef<
       >
         {children}
         <div className="b_mono flex items-center justify-center shrink-0">
-          <ChevronDown className="w-3 h-3 text-secondary-color" /> 
+          <ChevronDown aria-hidden="true" className="w-3 h-3 text-secondary-color" />
         </div>
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
@@ -190,7 +183,7 @@ const AccordionContent = React.forwardRef<
     const [year, num] = contentId.split('-');
     const project = allProjects.find(p => p.num === num && p.date === year);
     if (project) {
-      preloadImage(project.svgSrc);
+      preloadImage(project.cardImage);
     }
   };
 
@@ -205,14 +198,23 @@ const AccordionContent = React.forwardRef<
       )}
       {...props}
     >
-      <div 
+      <div
         ref={contentRef}
         data-content-id={contentId}
+        role="button"
+        tabIndex={0}
+        aria-label={typeof children === "string" ? children : undefined}
         className={cn(
           "relative pb-[0.35rem] pt-[0.4rem] px-[0.75rem] rounded-[0.375rem] cursor-pointer",
           isSelected ? "text-primary-color" : "hover:text-primary-color",
         )}
         onClick={handleClick}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleClick();
+          }
+        }}
         onMouseEnter={handleMouseEnter}
       >
         <AnimatePresence>

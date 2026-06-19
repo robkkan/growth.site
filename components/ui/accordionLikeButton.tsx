@@ -32,7 +32,7 @@ const AccordionLikeButton: React.FC<AccordionLikeButtonProps> = ({ href, classNa
         )}
       >
         <span>{children}</span>
-        <ArrowRight className="w-3 h-3 text-secondary-color transition-colors duration-400 ease-in-out" />
+        <ArrowRight aria-hidden="true" className="w-3 h-3 text-secondary-color transition-colors duration-400 ease-in-out" />
       </Link>
     </HoverEffectWrapper>
   );

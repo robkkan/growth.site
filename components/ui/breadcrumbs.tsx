@@ -13,57 +13,42 @@ interface Crumb {
 
 interface BreadcrumbsProps {
   crumbs: Crumb[];
-  fromAllWorks?: boolean;
-  backTo?: string;
 }
 
-const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ crumbs, fromAllWorks = false, backTo = '/' }) => {
+const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ crumbs }) => {
   const router = useRouter();
 
-  const allWorksCrumb: Crumb = { label: 'ALL WORKS', href: '/all-works' };
-  const displayCrumbs = fromAllWorks ? [allWorksCrumb, ...crumbs] : crumbs;
-
-  const handleBack = () => {
-    try {
-      const currentPath = window.location.pathname;
-      window.history.back();
-      
-      // If we're still on the same page after a short delay, use the backTo route
-      setTimeout(() => {
-        if (document.location.pathname === currentPath) {
-          router.push(backTo);
-        }
-      }, 100);
-    } catch {
-      router.push(backTo);
-    }
-  };
-
   return (
-    <section className="flex items-center gap-[0.25rem] w-full">
-      <Button 
-        onClick={handleBack}
+    <nav aria-label="Breadcrumb" className="flex items-center gap-[0.25rem] w-full">
+      <Button
+        onClick={() => router.back()}
         className="flex items-center gap-[0.25rem] pl-[0.5rem]"
       >
-        <ArrowLeftIcon className="w-3 h-3" />
+        <ArrowLeftIcon aria-hidden="true" className="w-3 h-3" />
         BACK
       </Button>
-      {displayCrumbs.map((crumb, index) => (
-        <React.Fragment key={index}>
-          <ChevronRightIcon className="w-3 h-3 text-tertiary-color" />
-          <Button 
-            variant={index === displayCrumbs.length - 1 ? "selected" : "default"}
-            className={index === displayCrumbs.length - 1 ? "shadow-inset-tertiary" : ""}
-            onClick={() => crumb.href && router.push(crumb.href)}
-          >
-            {crumb.label}
-          </Button>
-        </React.Fragment>
-      ))}
+      <ol className="flex items-center gap-[0.25rem]">
+        {crumbs.map((crumb, index) => {
+          const isLast = index === crumbs.length - 1;
+          return (
+            <li key={crumb.label} className="flex items-center gap-[0.25rem]">
+              <ChevronRightIcon aria-hidden="true" className="w-3 h-3 text-tertiary-color" />
+              <Button
+                variant={isLast ? "selected" : "default"}
+                className={isLast ? "shadow-inset-tertiary" : ""}
+                onClick={() => crumb.href && router.push(crumb.href)}
+                aria-current={isLast ? "page" : undefined}
+              >
+                {crumb.label}
+              </Button>
+            </li>
+          );
+        })}
+      </ol>
       <div className="flex-grow ml-[0.25rem] mt-[0.625rem]">
         <div className="h-[0.0625rem] bg-tertiary-color opacity-[0.6]"></div>
       </div>
-    </section>
+    </nav>
   );
 };
 

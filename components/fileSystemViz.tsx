@@ -2,18 +2,18 @@ import React, { memo, useMemo } from 'react';
 import Image from 'next/image';
 import { Project } from '@/lib/data/projectData';
 import ProjectCard from '@/components/ui/projectCard';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 interface FileSystemVisualizerProps {
-  selectedYear: string;
   projects: Project[];
   selectedProject: Project | null;
 }
 
-const FileSystemVisualizer: React.FC<FileSystemVisualizerProps> = memo(({ 
+const FileSystemVisualizer: React.FC<FileSystemVisualizerProps> = memo(({
   projects,
-  selectedProject 
+  selectedProject
 }) => {
+  const prefersReducedMotion = useReducedMotion();
   const folderWidth = 36.5;      // 584px
   const folderHeight = 27;       // 432px
   const topPadding = 2.8125;     // 45px
@@ -28,9 +28,9 @@ const FileSystemVisualizer: React.FC<FileSystemVisualizerProps> = memo(({
   }, [selectedProject, projects]);
 
   return (
-    <motion.div 
+    <motion.div
       className="relative mx-auto"
-      whileHover="hover"
+      whileHover={prefersReducedMotion ? undefined : "hover"}
       initial="initial"
       style={{ 
         width: `${folderWidth}rem`,
@@ -91,7 +91,7 @@ const FileSystemVisualizer: React.FC<FileSystemVisualizerProps> = memo(({
           >
             <ProjectCard
               title={currentProject.title}
-              svgSrc={currentProject.svgSrc}
+              cardImage={currentProject.cardImage}
               link={currentProject.href}
               isSmaller={false}
             />
@@ -136,5 +136,6 @@ const FileSystemVisualizer: React.FC<FileSystemVisualizerProps> = memo(({
     </motion.div>
   );
 });
+FileSystemVisualizer.displayName = "FileSystemVisualizer";
 
 export default FileSystemVisualizer;

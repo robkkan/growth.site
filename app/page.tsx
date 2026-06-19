@@ -34,37 +34,10 @@ function HomeContent() {
   });
   
   const router = useRouter();
-  const [headerText, setHeaderText] = useState("Hey, I'm Robert.");
 
   const { hoveredItem, handleMouseEnter, handleMouseLeave } = useHoverEffect();
 
-  const [isLeaving, setIsLeaving] = useState(false);
-  const [isGridLeaving, setIsGridLeaving] = useState(false);
-
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setSelectedButton("home");
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (typeof window !== "undefined") {
-        setHeaderText(
-          window.innerWidth <= 470 ? "Robert." : "Hey, I'm Robert."
-        );
-      }
-    };
-
-    // Initial check
-    handleResize();
-
-    // Add event listener
-    window.addEventListener("resize", handleResize);
-
-    // Cleanup
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -93,36 +66,25 @@ function HomeContent() {
     setSelectedYear(year);
   };
 
-  useEffect(() => {
-    console.log("Page State Changed:", {
-      selectedYear,
-      selectedProject: selectedProject?.num,
-    });
-  }, [selectedYear, selectedProject]);
-
-  const handleGridClick = () => {
-    setIsLeaving(true);
-
-    // Navigate after content fade completes
-    setTimeout(() => {
-      router.push("/growth");
-    }, 200);
-  };
-
   return (
-    <main className="page-container page-container-default">
+    <main id="main" className="page-container page-container-default">
       <div className="flex flex-col gap-5 items-center w-full">
         {/* Introduction Section */}
         <section className="flex flex-col gap-2 w-full">
           <HeaderMain
-            headerText={headerText}
+            title={
+              <>
+                <span className="hidden min-[471px]:inline">Hey, I&apos;m Robert.</span>
+                <span className="min-[471px]:hidden">Robert.</span>
+              </>
+            }
             selectedButton={selectedButton}
             handleButtonClick={handleButtonClick}
           />
           
           <div className="flex flex-col gap-2 w-full">
             <p className="b_mono">
-            I design products that present with  thoughtful simplicity, fading into the background through familiarity.   Previously, I was at{" "}
+            I design products that present with thoughtful simplicity, fading into the background through familiarity. Previously, I was at{" "}
               <span className="group">
                 <a
                   href="https://business.linkedin.com/marketing-solutions/ads/linkedin-accelerate"
@@ -245,31 +207,17 @@ function HomeContent() {
               <motion.div
                 layoutId="gridInner"
                 className="w-full"
-                style={
-                  {
-                    position: "absolute",
-                    width: "142%",
-                    aspectRatio: "40.6875 / 32.5625",
-                    top: "-43%",
-                    left: "-17%",
-                    transformOrigin: "center center",
-                    "--grid-color": "#E6E6E6",
-                  } as any
-                }
-                initial={{ "--grid-color": "#E6E6E6" } as any}
-                animate={{ "--grid-color": "#E6E6E6" } as any}
-                transition={{
-                  delay: 1.15,
-                  duration: 0.6,
-                  ease: [0.25, 0.85, 0.35, 0.95],
+                style={{
+                  position: "absolute",
+                  width: "142%",
+                  aspectRatio: "40.6875 / 32.5625",
+                  top: "-43%",
+                  left: "-17%",
+                  transformOrigin: "center center",
+                  ["--grid-color" as string]: "#E6E6E6",
                 }}
               >
-                <Grid 
-                  rows={8} 
-                  cols={10} 
-                  noBorder={true} 
-                  playLoadingAnimation={!isLoading} 
-                />
+                <Grid rows={8} cols={10} noBorder={true} />
               </motion.div>
             </motion.div>
           </div>
@@ -310,7 +258,6 @@ function HomeContent() {
                 </Accordion>
               </div>
               <FileSystemVisualizer
-                selectedYear={selectedYear}
                 projects={projectData[selectedYear] || []}
                 selectedProject={selectedProject}
               />

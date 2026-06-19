@@ -54,11 +54,11 @@ export default function WritingClient({ initialEntries }: WritingClientProps) {
   );
 
   return (
-    <main className="page-container page-container-default">
+    <main id="main" className="page-container page-container-default">
       <div className="flex flex-col gap-[2.25rem] items-center w-full">
         <section className="flex flex-col gap-[0.75rem] w-full">
           <HeaderMain
-            headerText="Writing."
+            title="Writing."
             selectedButton={selectedButton}
             handleButtonClick={handleButtonClick}
           />

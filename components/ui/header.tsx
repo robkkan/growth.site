@@ -3,13 +3,13 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from 'next/navigation';
 
 interface HeaderMainProps {
-  headerText: string;
+  title: React.ReactNode;
   selectedButton: string;
   handleButtonClick: (buttonName: string) => void;
 }
 
 const HeaderMain: React.FC<HeaderMainProps> = ({
-  headerText,
+  title,
   selectedButton,
   handleButtonClick,
 }) => {
@@ -22,7 +22,7 @@ const HeaderMain: React.FC<HeaderMainProps> = ({
   return (
     <header className="w-full">
       <div className="flex flex-row justify-between items-center w-full">
-        <h1 className="font-tiempos-headline">{headerText}</h1>
+        <h1 className="font-tiempos-headline">{title}</h1>
         <nav className="flex flex-row gap-1">
           <Tabs defaultValue={selectedButton} onValueChange={handleTabChange}>
             <TabsList>

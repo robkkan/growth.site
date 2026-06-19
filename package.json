@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@mapbox/rehype-prism": "^0.9.0",
@@ -25,7 +28,7 @@
     "framer-motion": "^11.11.7",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.451.0",
-    "next": "^15.1.7",
+    "next": "^15.5.19",
     "next-mdx-remote": "^5.0.0",
     "prettier": "^3.3.3",
     "react": "^19.0.0",
@@ -39,8 +42,8 @@
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "eslint": "^8",
     "eslint-config-next": "^15.0.2",
     "postcss": "^8",
